@@ -106,21 +106,10 @@ public class PsQuiz {
 //            Arrays.sort(answer.answer);
 
             if( Arrays.equals(quiz.answer,answer.answer)) {
-
-
                 String s = user.getUsername();
-                boolean f = !(s== null);
-//                try {
-//                    CompletedQuiz completedQuiz = new CompletedQuiz(dataUsers.findByEmail(s).id, id, new Date());
-//                    dataCompletedQuiz.save(completedQuiz);
-//                }
-//                catch (Exception exc){
-//                    s = "Wrong";
-//                }
-                System.out.println("Имя пользователя: " + s);
                 CompletedQuiz completedQuiz = new CompletedQuiz(dataUsers.findByEmail(s).id, id, new Date());
                 dataCompletedQuiz.save(completedQuiz);
-                return ResponseEntity.ok(new AnswerResponse(true, s +"Congratulations, you're right!"));
+                return ResponseEntity.ok(new AnswerResponse(true, "Congratulations, you're right!"));
             }
             else{
                 return ResponseEntity.ok(new AnswerResponse(false, "Wrong answer! Please, try again."));

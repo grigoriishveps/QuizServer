@@ -1,6 +1,8 @@
 package engine;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
@@ -12,6 +14,7 @@ public class CompletedQuiz {
 
     public Long quizId;
     @Id
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     public Date completedAt;
     CompletedQuiz(){};
     CompletedQuiz(Long userid, Long quizId, Date completedAt){
