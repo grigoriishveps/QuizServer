@@ -16,4 +16,11 @@ public class InfoPage {
     public boolean empty;
     public Object pageable;
     public List<Question> content;
+
+
+    public InfoPage(){}
+    public InfoPage(int pageNumber, int size){
+        this.number = pageNumber;
+        this.size = size;
+    }
 }

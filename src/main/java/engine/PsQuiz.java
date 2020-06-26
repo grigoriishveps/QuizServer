@@ -39,10 +39,10 @@ public class PsQuiz {
     //--------------------------
     @GetMapping("/api/quizzes" )
     public InfoPage getQuizzes(@RequestParam(defaultValue = "0") Integer page,
-                               @RequestParam(defaultValue = "10") Integer pageSize,
+                               @RequestParam(defaultValue = "9") Integer pageSize,
                                @RequestParam(defaultValue = "id") String sortBy){
         Pageable paging = PageRequest.of(page, pageSize, Sort.by(sortBy));
-        InfoPage infoPage = new InfoPage();
+        InfoPage infoPage = new InfoPage(page, pageSize);
         Page<Quiz> readyPage = dataQuiz.findAll(paging);
         infoPage.totalElements = (int) dataQuiz.count();
         infoPage.totalPages = readyPage.getTotalPages();
@@ -68,7 +68,7 @@ public class PsQuiz {
 
     @GetMapping("/api/quizzes/completed")
     public InfoPageCompletedQuiz getCompletedQuizzes(@RequestParam(defaultValue = "0") Integer page,
-                                                     @RequestParam(defaultValue = "10") Integer pageSize,
+                                                     @RequestParam(defaultValue = "9") Integer pageSize,
                                                      @RequestParam(defaultValue = "completedAt") String sortBy, @AuthenticationPrincipal UserDetails user){
         Pageable paging = PageRequest.of(page, pageSize, Sort.by(sortBy).descending());
         InfoPageCompletedQuiz infoPage = new InfoPageCompletedQuiz();
