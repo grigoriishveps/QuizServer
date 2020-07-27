@@ -5,21 +5,39 @@ plugins {
 }
 
 sourceCompatibility = 1.8
-
+group 'org.example'
+version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 sourceSets.main.resources.srcDirs = ["src/main/resources"]
 
+//jar {
+//    manifest {
+//        attributes("Main-Class": "engine.App")
+//    }
+//}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    //implementation("com.h2database:h2:1.4.191")
 
     runtimeOnly 'com.h2database:h2'
 
-    compile("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
     //testCompile group: 'junit', name: 'junit', version: '4.12'
+    //testImplementation 'junit:junit:4.12'
+
+
 }

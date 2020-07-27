@@ -1,6 +1,5 @@
 package engine;
 
-import engine.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,16 +7,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +29,8 @@ public class PsQuiz {
     private RepositoryCompletedQuiz dataCompletedQuiz;
     @Autowired
     private RepositoryUsers dataUsers;
+    @Autowired
+    private RepositoryRole dataRole;
 
     private int index = 0;
     public PsQuiz(){}
@@ -57,7 +55,7 @@ public class PsQuiz {
         return infoPage;
     }
 
-    @GetMapping("/api/quizzes/{id}")
+    @GetMapping("/api/quiz/{id}")
     public ResponseEntity<Question> getQuiz(@PathVariable int id){
         Optional<Quiz> quiz = dataQuiz.findById((long) id);
         if (quiz.isPresent())
@@ -119,13 +117,16 @@ public class PsQuiz {
     //--------------------------------------------
     @PostMapping("api/register")
     public ResponseEntity registerUser(@Valid @RequestBody UserDao user){
-        if (dataUsers.existsByEmail(user.email))
+        if (dataUsers.existsByEmail(user.getEmail()))
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         else {
-            dataUsers.save(new User(user.email, passwordEncoder.encode(user.password)));
+            //dataRole.save(new Role("USER"));
+            dataUsers.save(new User(user.getEmail(), passwordEncoder.encode(user.getPassword()), Collections.singletonList(dataRole.findByName("USER"))));
             return new ResponseEntity(HttpStatus.OK);
         }
     }
+
+
 
 
     @DeleteMapping("/api/quizzes/{id}")
@@ -142,8 +143,17 @@ public class PsQuiz {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/login")
+    @GetMapping("/uilogin")
     public ResponseEntity checkAutorization(){
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @GetMapping("/user/roles")
+    public ResponseEntity getRoles(@AuthenticationPrincipal User user){
+        System.out.println(((List<Role>) user.getAuthorities()));
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+
 }
