@@ -115,7 +115,7 @@ public class PsQuiz {
         }
     }
     //--------------------------------------------
-    @PostMapping("api/register")
+    @PostMapping("/api/register")
     public ResponseEntity registerUser(@Valid @RequestBody UserDao user){
         if (dataUsers.existsByEmail(user.getEmail()))
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -143,7 +143,7 @@ public class PsQuiz {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/uilogin")
+    @GetMapping("/login")
     public ResponseEntity checkAutorization(){
         return new ResponseEntity(HttpStatus.OK);
     }
